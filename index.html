@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Grandpa's Still — Small-Batch Moonshine</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lato:wght@300;400;700&family=Satisfy&display=swap"
+            rel="stylesheet" />
+
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            :root {
+                /* Colors */
+                --color-bg: #1a1208;
+                --color-bg-mid: #241a0a;
+                --color-bg-card: #2e1f0d;
+                --color-bg-card-alt: #3a2710;
+                --color-primary: #c8860a;
+                --color-primary-light: #e8a020;
+                --color-primary-dark: #9a6408;
+                --color-text: #f0e6d0;
+                --color-text-muted: #a89070;
+                --color-text-dark: #6b5030;
+                --color-border: #4a3218;
+                --color-border-light: #6a4828;
+                --color-accent: #8b2020;
+                --color-cream: #f5ead8;
+
+                /* Typography */
+                --font-heading: 'Playfair Display', Georgia, serif;
+                --font-script: 'Satisfy', cursive;
+                --font-body: 'Lato', sans-serif;
+
+                /* Spacing */
+                --space-xs: 8px;
+                --space-sm: 16px;
+                --space-md: 32px;
+                --space-lg: 64px;
+                --space-xl: 96px;
+
+                /* Layout */
+                --max-width: 1100px;
+                --nav-height: 72px;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                background-color: var(--color-bg);
+                color: var(--color-text);
+                font-family: var(--font-body);
+                font-size: 16px;
+                line-height: 1.6;
+                min-height: 100vh;
+            }
+
+            /* ─── VIEWS ─────────────────────────────────────── */
+            .view {
+                display: none;
+                opacity: 0;
+                transition: opacity 0.4s ease;
+            }
+            .view.active {
+                display: block;
+                opacity: 1;
+            }
+
+            /* ─── NAV ────────────────────────────────────────── */
+            nav[data-comment="nav-root"] {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: var(--nav-height);
+                background: rgba(26, 18, 8, 0.95);
+                backdrop-filter: blur(8px);
+                border-bottom: 1px solid var(--color-border);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 var(--space-md);
+                z-index: 100;
+            }
+
+            .nav-logo[data-comment="nav-logo"] {
+                display: flex;
+                flex-direction: column;
+                cursor: pointer;
+                gap: 0;
+            }
+
+            .nav-logo-script[data-comment="nav-logo-script"] {
+                font-family: var(--font-script);
+                font-size: 26px;
+                color: var(--color-primary-light);
+                line-height: 1;
+            }
+
+            .nav-logo-tagline[data-comment="nav-logo-tagline"] {
+                font-family: var(--font-body);
+                font-size: 10px;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: var(--color-text-muted);
+            }
+
+            .nav-links[data-comment="nav-links"] {
+                display: flex;
+                gap: var(--space-md);
+                list-style: none;
+            }
+
+            .nav-links li button {
+                background: none;
+                border: none;
+                font-family: var(--font-body);
+                font-size: 13px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--color-text-muted);
+                cursor: pointer;
+                padding: 6px 0;
+                position: relative;
+                transition: color 0.2s;
+            }
+
+            .nav-links li button::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: var(--color-primary);
+                transform: scaleX(0);
+                transition: transform 0.2s;
+            }
+
+            .nav-links li button:hover,
+            .nav-links li button.active {
+                color: var(--color-primary-light);
+            }
+
+            .nav-links li button.active::after,
+            .nav-links li button:hover::after {
+                transform: scaleX(1);
+            }
+
+            /* ─── DIVIDER ────────────────────────────────────── */
+            .divider {
+                display: flex;
+                align-items: center;
+                gap: var(--space-sm);
+                margin: var(--space-md) 0;
+            }
+
+            .divider-line {
+                flex: 1;
+                height: 1px;
+                background: var(--color-border);
+            }
+
+            .divider-icon {
+                color: var(--color-primary);
+                font-size: 18px;
+            }
+
+            /* ─── SECTION LABEL ──────────────────────────────── */
+            .section-label {
+                font-size: 11px;
+                letter-spacing: 4px;
+                text-transform: uppercase;
+                color: var(--color-primary);
+                margin-bottom: var(--space-xs);
+            }
+
+            .section-heading {
+                font-family: var(--font-heading);
+                font-size: clamp(28px, 4vw, 48px);
+                line-height: 1.15;
+                color: var(--color-cream);
+            }
+
+            /* ─── BUTTONS ────────────────────────────────────── */
+            .btn-primary {
+                display: inline-block;
+                background: var(--color-primary);
+                color: var(--color-bg);
+                font-family: var(--font-body);
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                padding: 14px 32px;
+                border: 2px solid var(--color-primary);
+                cursor: pointer;
+                transition: background 0.2s, color 0.2s;
+                text-decoration: none;
+            }
+
+            .btn-primary:hover {
+                background: transparent;
+                color: var(--color-primary);
+            }
+
+            .btn-outline {
+                display: inline-block;
+                background: transparent;
+                color: var(--color-cream);
+                font-family: var(--font-body);
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                padding: 14px 32px;
+                border: 2px solid var(--color-border-light);
+                cursor: pointer;
+                transition: border-color 0.2s, color 0.2s;
+                text-decoration: none;
+            }
+
+            .btn-outline:hover {
+                border-color: var(--color-primary);
+                color: var(--color-primary-light);
+            }
+
+            /* ─── CONTAINER ──────────────────────────────────── */
+            .container {
+                max-width: var(--max-width);
+                margin: 0 auto;
+                padding: 0 var(--space-md);
+            }
+
+            /* ═══════════════════════════════════════════════════
+               HOME VIEW
+            ═══════════════════════════════════════════════════ */
+
+            /* ─── HERO ───────────────────────────────────────── */
+            section[data-comment="home-hero"] {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: var(--nav-height) var(--space-md) var(--space-lg);
+                position: relative;
+                overflow: hidden;
+                background:
+                    radial-gradient(ellipse at 50% 60%, rgba(200, 134, 10, 0.08) 0%, transparent 65%),
+                    linear-gradient(180deg, #0d0900 0%, #1a1208 40%, #241a0a 100%);
+            }
+
+            .hero-bg-texture[data-comment="home-hero-texture"] {
+                position: absolute;
+                inset: 0;
+                background-image:
+                    repeating-linear-gradient(
+                        0deg,
+                        transparent,
+                        transparent 2px,
+                        rgba(200, 134, 10, 0.015) 2px,
+                        rgba(200, 134, 10, 0.015) 4px
+                    );
+                pointer-events: none;
+            }
+
+            .hero-badge[data-comment="home-hero-badge"] {
+                display: inline-block;
+                border: 1px solid var(--color-border);
+                padding: 6px 20px;
+                font-size: 11px;
+                letter-spacing: 4px;
+                text-transform: uppercase;
+                color: var(--color-text-muted);
+                margin-bottom: var(--space-sm);
+            }
+
+            .hero-heading[data-comment="home-hero-heading"] {
+                font-family: var(--font-heading);
+                font-size: clamp(48px, 9vw, 110px);
+                font-weight: 900;
+                line-height: 0.9;
+                color: var(--color-cream);
+                margin-bottom: var(--space-xs);
+            }
+
+            .hero-heading-script[data-comment="home-hero-heading-script"] {
+                display: block;
+                font-family: var(--font-script);
+                font-size: clamp(36px, 6vw, 72px);
+                color: var(--color-primary-light);
+                font-weight: 400;
+                line-height: 1.2;
+                margin-bottom: var(--space-sm);
+            }
+
+            .hero-subheading[data-comment="home-hero-subheading"] {
+                font-size: 16px;
+                color: var(--color-text-muted);
+                max-width: 480px;
+                margin: 0 auto var(--space-md);
+                line-height: 1.8;
+            }
+
+            .hero-cta-group[data-comment="home-hero-cta-group"] {
+                display: flex;
+                gap: var(--space-sm);
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .hero-cta-primary[data-comment="home-hero-cta-primary"] {
+                background: var(--color-primary);
+                color: var(--color-bg);
+                font-family: var(--font-body);
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                padding: 16px 40px;
+                border: 2px solid var(--color-primary);
+                cursor: pointer;
+                transition: background 0.2s, color 0.2s;
+            }
+
+            .hero-cta-primary:hover {
+                background: transparent;
+                color: var(--color-primary);
+            }
+
+            .hero-cta-secondary[data-comment="home-hero-cta-secondary"] {
+                background: transparent;
+                color: var(--color-cream);
+                font-family: var(--font-body);
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                padding: 16px 40px;
+                border: 2px solid var(--color-border-light);
+                cursor: pointer;
+                transition: border-color 0.2s, color 0.2s;
+            }
+
+            .hero-cta-secondary:hover {
+                border-color: var(--color-primary);
+                color: var(--color-primary-light);
+            }
+
+            .hero-scroll-hint[data-comment="home-hero-scroll-hint"] {
+                position: absolute;
+                bottom: 32px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+                color: var(--color-text-dark);
+                font-size: 10px;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                animation: bounce 2s ease infinite;
+            }
+
+            .hero-scroll-arrow[data-comment="home-hero-scroll-arrow"] {
+                width: 20px;
+                height: 20px;
+                border-right: 1px solid var(--color-text-dark);
+                border-bottom: 1px solid var(--color-text-dark);
+                transform: rotate(45deg);
+            }
+
+            @keyframes bounce {
+                0%, 100% { transform: translateX(-50%) translateY(0); }
+                50% { transform: translateX(-50%) translateY(8px); }
+            }
+
+            /* ─── STATS BAR ──────────────────────────────────── */
+            section[data-comment="home-stats"] {
+                border-top: 1px solid var(--color-border);
+                border-bottom: 1px solid var(--color-border);
+                background: var(--color-bg-mid);
+            }
+
+            .stats-grid[data-comment="home-stats-grid"] {
+                max-width: var(--max-width);
+                margin: 0 auto;
+                padding: var(--space-md);
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1px;
+                background: var(--color-border);
+            }
+
+            .stat-item[data-comment^="home-stat-"] {
+                background: var(--color-bg-mid);
+                padding: var(--space-md) var(--space-sm);
+                text-align: center;
+            }
+
+            .stat-number[data-comment^="home-stat-"][data-comment$="-number"] {
+                font-family: var(--font-heading);
+                font-size: 42px;
+                font-weight: 900;
+                color: var(--color-primary-light);
+                line-height: 1;
+            }
+
+            .stat-label[data-comment^="home-stat-"][data-comment$="-label"] {
+                font-size: 11px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--color-text-muted);
+                margin-top: 6px;
+            }
+
+            /* ─── STORY PREVIEW ──────────────────────────────── */
+            section[data-comment="home-story"] {
+                padding: var(--space-xl) 0;
+            }
+
+            .home-story-inner {
+                max-width: var(--max-width);
+                margin: 0 auto;
+                padding: 0 var(--space-md);
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-lg);
+                align-items: center;
+            }
+
+            .home-story-still[data-comment="home-story-still"] {
+                aspect-ratio: 3/4;
+                background: var(--color-bg-card);
+                border: 1px solid var(--color-border);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .still-illustration[data-comment="home-story-still-illustration"] {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .home-story-text[data-comment="home-story-text"] {
+                display: flex;
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+
+            .home-story-quote[data-comment="home-story-quote"] {
+                font-family: var(--font-heading);
+                font-style: italic;
+                font-size: 22px;
+                color: var(--color-primary-light);
+                line-height: 1.5;
+                border-left: 3px solid var(--color-primary);
+                padding-left: var(--space-sm);
+            }
+
+            .home-story-body[data-comment="home-story-body"] {
+                color: var(--color-text-muted);
+                line-height: 1.9;
+            }
+
+            .home-story-cta[data-comment="home-story-cta"] {
+                background: transparent;
+                color: var(--color-primary-light);
+                font-family: var(--font-body);
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                padding: 0;
+                border: none;
+                cursor: pointer;
+                text-align: left;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                transition: gap 0.2s;
+            }
+
+            .home-story-cta:hover {
+                gap: 16px;
+            }
+
+            /* ─── FEATURED PRODUCTS ──────────────────────────── */
+            section[data-comment="home-featured"] {
+                padding: var(--space-xl) 0;
+                background: var(--color-bg-mid);
+            }
+
+            .home-featured-header[data-comment="home-featured-header"] {
+                max-width: var(--max-width);
+                margin: 0 auto var(--space-lg);
+                padding: 0 var(--space-md);
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+            }
+
+            .home-featured-heading[data-comment="home-featured-heading"] {
+                font-family: var(--font-heading);
+                font-size: clamp(28px, 4vw, 42px);
+                color: var(--color-cream);
+            }
+
+            .home-featured-viewall[data-comment="home-featured-viewall"] {
+                background: transparent;
+                color: var(--color-primary);
+                font-family: var(--font-body);
+                font-size: 12px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                transition: color 0.2s;
+            }
+
+            .home-featured-viewall:hover {
+                color: var(--color-primary-light);
+            }
+
+            .featured-grid[data-comment="home-featured-grid"] {
+                max-width: var(--max-width);
+                margin: 0 auto;
+                padding: 0 var(--space-md);
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: var(--space-sm);
+            }
+
+            .featured-card[data-comment^="home-featured-card-"] {
+                background: var(--color-bg-card);
+                border: 1px solid var(--color-border);
+                overflow: hidden;
+                cursor: pointer;
+                transition: border-color 0.2s, transform 0.2s;
+            }
+
+            .featured-card:hover {
+                border-color: var(--color-primary-dark);
+                transform: translateY(-4px);
+            }
+
+            .featured-card-image[data-comment$="-image"] {
+                aspect-ratio: 1;
+                background: var(--color-bg-card-alt);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            .featured-card-body {
+                padding: var(--space-sm);
+            }
+
+            .featured-card-label[data-comment$="-label"] {
+                font-size: 10px;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: var(--color-primary);
+                margin-bottom: 4px;
+            }
+
+            .featured-card-name[data-comment$="-name"] {
+                font-family: var(--font-heading);
+                font-size: 20px;
+                color: var(--color-cream);
+                margin-bottom: 6px;
+            }
+
+            .featured-card-desc[data-comment$="-desc"] {
+                font-size: 13px;
+                color: var(--color-text-muted);
+                line-height: 1.6;
+                margin-bottom: var(--space-sm);
+            }
+
+            .featured-card-footer {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .featured-card-price[data-comment$="-price"] {
+                font-family: var(--font-heading);
+                font-size: 22px;
+                color: var(--color-primary-light);
+            }
+
+            .featured-card-proof[data-comment$="-proof"] {
+                font-size: 11px;
+                letter-spacing: 1px;
+                color: var(--color-text-dark);
+                text-transform: uppercase;
+            }
+
+            /* ─── PROCESS SECTION ────────────────────────────── */
+            section[data-comment="home-process"] {
+                padding: var(--space-xl) 0;
+            }
+
+            .home-process-inner {
+                max-width: var(--max-width);
+                margin: 0 auto;
+                padding: 0 var(--space-md);
+            }
+
+            .home-process-header[data-comment="home-process-header"] {
+                text-align: center;
+                margin-bottom: var(--space-lg);
+            }
+
+            .home-process-heading[data-comment="home-process-heading"] {
+                font-family: var(--font-heading);
+                font-size: clamp(28px, 4vw, 42px);
+                color: var(--color-cream);
+            }
+
+            .process-steps[data-comment="home-process-steps"] {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: var(--space-md);
+                position: relative;
+            }
+
+            .process-step[data-comment^="home-process-step-"] {
+                text-align: center;
+                position: relative;
+            }
+
+            .process-step-number[data-comment$="-number"] {
+                width: 56px;
+                height: 56px;
+                border: 1px solid var(--color-border);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto var(--space-sm);
+                font-family: var(--font-heading);
+                font-size: 20px;
+                color: var(--color-primary);
+            }
+
+            .process-step-title[data-comment$="-title"] {
+                font-family: var(--font-heading);
+                font-size: 18px;
+                color: var(--color-cream);
+                margin-bottom: 8px;
+            }
+
+            .process-step-desc[data-comment$="-desc"] {
+                font-size: 13px;
+                color: var(--color-text-muted);
+                line-height: 1.7;
+            }
+
+            /* ─── HOME FOOTER BANNER ─────────────────────────── */
+            section[data-comment="home-banner"] {
+                padding: var(--space-lg) var(--space-md);
+                background: var(--color-bg-card);
+                border-top: 1px solid var(--color-border);
+                border-bottom: 1px solid var(--color-border);
+                text-align: center;
+            }
+
+            .home-banner-text[data-comment="home-banner-text"] {
+                font-family: var(--font-script);
+                font-size: clamp(28px, 5vw, 56px);
+                color: var(--color-primary-light);
+                margin-bottom: var(--space-sm);
+            }
+
+            .home-banner-sub[data-comment="home-banner-sub"] {
+                font-size: 14px;
+                color: var(--color-text-muted);
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                margin-bottom: var(--space-md);
+            }
+
+            .home-banner-cta[data-comment="home-banner-cta"] {
+                background: var(--color-primary);
+                color: var(--color-bg);
+                font-family: var(--font-body);
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                padding: 16px 48px;
+                border: 2px solid var(--color-primary);
+                cursor: pointer;
+                transition: background 0.2s, color 0.2s;
+            }
+
+            .home-banner-cta:hover {
+                background: transparent;
+                color: var(--color-primary);
+            }
+
+            /* ═══════════════════════════════════════════════════
+               CATALOG VIEW
+            ═══════════════════════════════════════════════════ */
+            .catalog-hero[data-comment="catalog-hero"] {
+                padding: calc(var(--nav-height) + var(--space-lg)) var(--space-md) var(--space-lg);
+                text-align: center;
+                background: linear-gradient(180deg, #0d0900 0%, var(--color-bg) 100%);
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            .catalog-hero-label[data-comment="catalog-hero-label"] {
+                font-size: 11px;
+                letter-spacing: 4px;
+                text-transform: uppercase;
+                color: var(--color-primary);
+                margin-bottom: 8px;
+            }
+
+            .catalog-hero-heading[data-comment="catalog-hero-heading"] {
+                font-family: var(--font-heading);
+                font-size: clamp(32px, 5vw, 56px);
+                color: var(--color-cream);
+                margin-bottom: var(--space-sm);
+            }
+
+            .catalog-hero-sub[data-comment="catalog-hero-sub"] {
+                color: var(--color-text-muted);
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .catalog-filters[data-comment="catalog-filters"] {
+                background: var(--color-bg-mid);
+                border-bottom: 1px solid var(--color-border);
+                padding: var(--space-sm) var(--space-md);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: var(--space-xs);
+                flex-wrap: wrap;
+            }
+
+            .filter-btn[data-comment^="catalog-filter-"] {
+                background: transparent;
+                color: var(--color-text-muted);
+                font-family: var(--font-body);
+                font-size: 12px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                padding: 8px 20px;
+                border: 1px solid var(--color-border);
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            .filter-btn:hover,
+            .filter-btn.active {
+                border-color: var(--color-primary);
+                color: var(--color-primary-light);
+                background: rgba(200, 134, 10, 0.06);
+            }
+
+            .catalog-grid-section[data-comment="catalog-grid-section"] {
+                padding: var(--space-lg) var(--space-md);
+                max-width: var(--max-width);
+                margin: 0 auto;
+            }
+
+            .catalog-grid[data-comment="catalog-grid"] {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: var(--space-sm);
+            }
+
+            .catalog-card[data-comment^="catalog-card-"] {
+                background: var(--color-bg-card);
+                border: 1px solid var(--color-border);
+                overflow: hidden;
+                transition: border-color 0.2s, transform 0.2s;
+                cursor: pointer;
+            }
+
+            .catalog-card:hover {
+                border-color: var(--color-primary-dark);
+                transform: translateY(-4px);
+            }
+
+            .catalog-card-img[data-comment$="-img"] {
+                aspect-ratio: 3/4;
+                background: var(--color-bg-card-alt);
+                border-bottom: 1px solid var(--color-border);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+            }
+
+            .catalog-card-badge[data-comment$="-badge"] {
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                background: var(--color-accent);
+                color: var(--color-cream);
+                font-size: 10px;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                padding: 4px 10px;
+            }
+
+            .catalog-card-info {
+                padding: var(--space-sm);
+            }
+
+            .catalog-card-category[data-comment$="-category"] {
+                font-size: 10px;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: var(--color-primary);
+                margin-bottom: 4px;
+            }
+
+            .catalog-card-name[data-comment$="-name"] {
+                font-family: var(--font-heading);
+                font-size: 20px;
+                color: var(--color-cream);
+                margin-bottom: 4px;
+            }
+
+            .catalog-card-proof[data-comment$="-proof"] {
+                font-size: 12px;
+                color: var(--color-text-dark);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 8px;
+            }
+
+            .catalog-card-desc[data-comment$="-desc"] {
+                font-size: 13px;
+                color: var(--color-text-muted);
+                line-height: 1.6;
+                margin-bottom: var(--space-sm);
+            }
+
+            .catalog-card-bottom {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-top: 12px;
+                border-top: 1px solid var(--color-border);
+            }
+
+            .catalog-card-price[data-comment$="-price"] {
+                font-family: var(--font-heading);
+                font-size: 22px;
+                color: var(--color-primary-light);
+            }
+
+            .catalog-card-btn[data-comment$="-btn"] {
+                background: var(--color-primary);
+                color: var(--color-bg);
+                font-family: var(--font-body);
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                padding: 10px 20px;
+                border: 2px solid var(--color-primary);
+                cursor: pointer;
+                transition: background 0.2s, color 0.2s;
+            }
+
+            .catalog-card-btn:hover {
+                background: transparent;
+                color: var(--color-primary);
+            }
+
+            /* ═══════════════════════════════════════════════════
+               STORY VIEW
+            ═══════════════════════════════════════════════════ */
+            .story-hero[data-comment="story-hero"] {
+                padding: calc(var(--nav-height) + var(--space-xl)) var(--space-md) var(--space-xl);
+                max-width: 760px;
+                margin: 0 auto;
+                text-align: center;
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            .story-hero-label[data-comment="story-hero-label"] {
+                font-size: 11px;
+                letter-spacing: 4px;
+                text-transform: uppercase;
+                color: var(--color-primary);
+                margin-bottom: 8px;
+            }
+
+            .story-hero-heading[data-comment="story-hero-heading"] {
+                font-family: var(--font-heading);
+                font-size: clamp(36px, 6vw, 64px);
+                color: var(--color-cream);
+                margin-bottom: var(--space-sm);
+            }
+
+            .story-hero-sub[data-comment="story-hero-sub"] {
+                font-family: var(--font-heading);
+                font-style: italic;
+                font-size: 20px;
+                color: var(--color-text-muted);
+            }
+
+            .story-body[data-comment="story-body"] {
+                max-width: 760px;
+                margin: 0 auto;
+                padding: var(--space-xl) var(--space-md);
+            }
+
+            .story-chapter[data-comment^="story-chapter-"] {
+                margin-bottom: var(--space-xl);
+            }
+
+            .story-chapter-heading[data-comment$="-heading"] {
+                font-family: var(--font-heading);
+                font-size: 28px;
+                color: var(--color-cream);
+                margin-bottom: var(--space-sm);
+            }
+
+            .story-chapter-text[data-comment$="-text"] {
+                color: var(--color-text-muted);
+                line-height: 2;
+                font-size: 16px;
+            }
+
+            .story-portrait[data-comment="story-portrait"] {
+                width: 100%;
+                max-width: 500px;
+                margin: var(--space-lg) auto;
+                aspect-ratio: 4/5;
+                background: var(--color-bg-card);
+                border: 1px solid var(--color-border);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .story-portrait-caption[data-comment="story-portrait-caption"] {
+                text-align: center;
+                font-size: 13px;
+                color: var(--color-text-dark);
+                margin-top: 12px;
+                font-style: italic;
+            }
+
+            .story-values[data-comment="story-values"] {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: var(--space-sm);
+                margin: var(--space-lg) 0;
+                padding: var(--space-lg) var(--space-md);
+                background: var(--color-bg-card);
+                border: 1px solid var(--color-border);
+                max-width: var(--max-width);
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .story-value[data-comment^="story-value-"] {
+                text-align: center;
+                padding: var(--space-sm);
+            }
+
+            .story-value-icon[data-comment$="-icon"] {
+                font-size: 36px;
+                margin-bottom: 12px;
+                display: block;
+            }
+
+            .story-value-title[data-comment$="-title"] {
+                font-family: var(--font-heading);
+                font-size: 18px;
+                color: var(--color-cream);
+                margin-bottom: 8px;
+            }
+
+            .story-value-text[data-comment$="-text"] {
+                font-size: 13px;
+                color: var(--color-text-muted);
+                line-height: 1.7;
+            }
+
+            /* ═══════════════════════════════════════════════════
+               CONTACT VIEW
+            ═══════════════════════════════════════════════════ */
+            .contact-hero[data-comment="contact-hero"] {
+                padding: calc(var(--nav-height) + var(--space-lg)) var(--space-md) var(--space-lg);
+                text-align: center;
+                background: linear-gradient(180deg, #0d0900 0%, var(--color-bg) 100%);
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            .contact-hero-label[data-comment="contact-hero-label"] {
+                font-size: 11px;
+                letter-spacing: 4px;
+                text-transform: uppercase;
+                color: var(--color-primary);
+                margin-bottom: 8px;
+            }
+
+            .contact-hero-heading[data-comment="contact-hero-heading"] {
+                font-family: var(--font-heading);
+                font-size: clamp(32px, 5vw, 56px);
+                color: var(--color-cream);
+                margin-bottom: var(--space-sm);
+            }
+
+            .contact-hero-sub[data-comment="contact-hero-sub"] {
+                color: var(--color-text-muted);
+                max-width: 460px;
+                margin: 0 auto;
+            }
+
+            .contact-body[data-comment="contact-body"] {
+                max-width: var(--max-width);
+                margin: 0 auto;
+                padding: var(--space-xl) var(--space-md);
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-lg);
+                align-items: start;
+            }
+
+            .contact-info[data-comment="contact-info"] {
+                display: flex;
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+
+            .contact-info-heading[data-comment="contact-info-heading"] {
+                font-family: var(--font-heading);
+                font-size: 28px;
+                color: var(--color-cream);
+                margin-bottom: var(--space-xs);
+            }
+
+            .contact-info-text[data-comment="contact-info-text"] {
+                color: var(--color-text-muted);
+                line-height: 1.8;
+            }
+
+            .contact-detail[data-comment^="contact-detail-"] {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .contact-detail-label[data-comment$="-label"] {
+                font-size: 10px;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: var(--color-primary);
+            }
+
+            .contact-detail-value[data-comment$="-value"] {
+                font-family: var(--font-heading);
+                font-size: 18px;
+                color: var(--color-cream);
+            }
+
+            .contact-form[data-comment="contact-form"] {
+                background: var(--color-bg-card);
+                border: 1px solid var(--color-border);
+                padding: var(--space-md);
+                display: flex;
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+
+            .contact-form-heading[data-comment="contact-form-heading"] {
+                font-family: var(--font-heading);
+                font-size: 22px;
+                color: var(--color-cream);
+                margin-bottom: 4px;
+            }
+
+            .form-field[data-comment^="contact-field-"] {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .form-label[data-comment$="-label"] {
+                font-size: 11px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--color-text-muted);
+            }
+
+            .form-input[data-comment$="-input"] {
+                background: var(--color-bg);
+                border: 1px solid var(--color-border);
+                color: var(--color-text);
+                font-family: var(--font-body);
+                font-size: 15px;
+                padding: 12px 16px;
+                outline: none;
+                transition: border-color 0.2s;
+            }
+
+            .form-input:focus {
+                border-color: var(--color-primary);
+            }
+
+            .form-input::placeholder {
+                color: var(--color-text-dark);
+            }
+
+            .form-textarea[data-comment="contact-field-message-input"] {
+                resize: vertical;
+                min-height: 120px;
+            }
+
+            .contact-form-submit[data-comment="contact-form-submit"] {
+                background: var(--color-primary);
+                color: var(--color-bg);
+                font-family: var(--font-body);
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                padding: 16px;
+                border: 2px solid var(--color-primary);
+                cursor: pointer;
+                transition: background 0.2s, color 0.2s;
+                margin-top: 4px;
+            }
+
+            .contact-form-submit:hover {
+                background: transparent;
+                color: var(--color-primary);
+            }
+
+            .contact-form-note[data-comment="contact-form-note"] {
+                font-size: 12px;
+                color: var(--color-text-dark);
+                text-align: center;
+            }
+
+            /* ─── FOOTER ─────────────────────────────────────── */
+            footer[data-comment="footer-root"] {
+                background: #0d0900;
+                border-top: 1px solid var(--color-border);
+                padding: var(--space-lg) var(--space-md) var(--space-md);
+            }
+
+            .footer-inner {
+                max-width: var(--max-width);
+                margin: 0 auto;
+            }
+
+            .footer-top[data-comment="footer-top"] {
+                display: grid;
+                grid-template-columns: 2fr 1fr 1fr;
+                gap: var(--space-lg);
+                margin-bottom: var(--space-lg);
+                padding-bottom: var(--space-lg);
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            .footer-brand[data-comment="footer-brand"] {
+                display: flex;
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+
+            .footer-brand-name[data-comment="footer-brand-name"] {
+                font-family: var(--font-script);
+                font-size: 36px;
+                color: var(--color-primary-light);
+                line-height: 1;
+            }
+
+            .footer-brand-tagline[data-comment="footer-brand-tagline"] {
+                font-size: 12px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--color-text-dark);
+            }
+
+            .footer-brand-text[data-comment="footer-brand-text"] {
+                font-size: 13px;
+                color: var(--color-text-muted);
+                line-height: 1.8;
+                max-width: 280px;
+            }
+
+            .footer-col[data-comment^="footer-col-"] {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .footer-col-heading[data-comment$="-heading"] {
+                font-size: 11px;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: var(--color-text-muted);
+                margin-bottom: 4px;
+            }
+
+            .footer-link[data-comment^="footer-link-"] {
+                background: none;
+                border: none;
+                font-family: var(--font-body);
+                font-size: 14px;
+                color: var(--color-text-dark);
+                cursor: pointer;
+                padding: 0;
+                text-align: left;
+                transition: color 0.2s;
+            }
+
+            .footer-link:hover {
+                color: var(--color-primary-light);
+            }
+
+            .footer-bottom[data-comment="footer-bottom"] {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .footer-copyright[data-comment="footer-copyright"] {
+                font-size: 12px;
+                color: var(--color-text-dark);
+            }
+
+            .footer-social[data-comment="footer-social"] {
+                display: flex;
+                gap: var(--space-sm);
+            }
+
+            .footer-social-link[data-comment^="footer-social-"] {
+                background: none;
+                border: 1px solid var(--color-border);
+                color: var(--color-text-dark);
+                width: 36px;
+                height: 36px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 14px;
+                transition: border-color 0.2s, color 0.2s;
+            }
+
+            .footer-social-link:hover {
+                border-color: var(--color-primary);
+                color: var(--color-primary-light);
+            }
+
+            /* ─── NOTIFICATION ───────────────────────────────── */
+            .notify[data-comment="notify-toast"] {
+                position: fixed;
+                bottom: 32px;
+                right: 32px;
+                background: var(--color-bg-card);
+                border: 1px solid var(--color-primary);
+                color: var(--color-cream);
+                padding: 16px 24px;
+                font-size: 14px;
+                z-index: 999;
+                opacity: 0;
+                transform: translateY(16px);
+                transition: opacity 0.3s, transform 0.3s;
+                pointer-events: none;
+            }
+
+            .notify.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- ── NAV ────────────────────────────────────────── -->
+        <nav data-comment="nav-root">
+            <div class="nav-logo" data-comment="nav-logo" onclick="navigate('home')">
+                <span class="nav-logo-script" data-comment="nav-logo-script">Grandpa's Still</span>
+                <span class="nav-logo-tagline" data-comment="nav-logo-tagline">Est. 1962 · Small-Batch Moonshine</span>
+            </div>
+            <ul class="nav-links" data-comment="nav-links">
+                <li><button data-comment="nav-link-home" class="active" onclick="navigate('home')">Home</button></li>
+                <li><button data-comment="nav-link-catalog" onclick="navigate('catalog')">Our Spirits</button></li>
+                <li><button data-comment="nav-link-story" onclick="navigate('story')">Our Story</button></li>
+                <li><button data-comment="nav-link-contact" onclick="navigate('contact')">Contact</button></li>
+            </ul>
+        </nav>
+
+        <!-- ══════════════════════════════════════════════════
+             HOME VIEW
+        ══════════════════════════════════════════════════ -->
+        <div id="view-home" class="view active" data-comment="view-home">
+
+            <!-- Hero -->
+            <section data-comment="home-hero">
+                <div class="hero-bg-texture" data-comment="home-hero-texture"></div>
+                <div>
+                    <div class="hero-badge" data-comment="home-hero-badge">Handcrafted · Small-Batch · Copper Pot Still</div>
+                    <h1 class="hero-heading" data-comment="home-hero-heading">
+                        Mountain
+                        <span class="hero-heading-script" data-comment="home-hero-heading-script">Moonshine</span>
+                        Spirit
+                    </h1>
+                    <p class="hero-subheading" data-comment="home-hero-subheading">
+                        Three generations of tradition in every jar. Grandpa's recipes, grandpa's methods — nothing added, nothing taken away.
+                    </p>
+                    <div class="hero-cta-group" data-comment="home-hero-cta-group">
+                        <button class="hero-cta-primary" data-comment="home-hero-cta-primary" onclick="navigate('catalog')">Shop Our Spirits</button>
+                        <button class="hero-cta-secondary" data-comment="home-hero-cta-secondary" onclick="navigate('story')">Our Story</button>
+                    </div>
+                </div>
+                <div class="hero-scroll-hint" data-comment="home-hero-scroll-hint">
+                    <span>Scroll</span>
+                    <div class="hero-scroll-arrow" data-comment="home-hero-scroll-arrow"></div>
+                </div>
+            </section>
+
+            <!-- Stats -->
+            <section data-comment="home-stats">
+                <div class="stats-grid" data-comment="home-stats-grid">
+                    <div class="stat-item" data-comment="home-stat-1">
+                        <div class="stat-number" data-comment="home-stat-1-number">62+</div>
+                        <div class="stat-label" data-comment="home-stat-1-label">Years of Craft</div>
+                    </div>
+                    <div class="stat-item" data-comment="home-stat-2">
+                        <div class="stat-number" data-comment="home-stat-2-number">100%</div>
+                        <div class="stat-label" data-comment="home-stat-2-label">Natural Grain</div>
+                    </div>
+                    <div class="stat-item" data-comment="home-stat-3">
+                        <div class="stat-number" data-comment="home-stat-3-number">6</div>
+                        <div class="stat-label" data-comment="home-stat-3-label">Signature Batches</div>
+                    </div>
+                    <div class="stat-item" data-comment="home-stat-4">
+                        <div class="stat-number" data-comment="home-stat-4-number">Cu</div>
+                        <div class="stat-label" data-comment="home-stat-4-label">Copper Pot Stilled</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Story Preview -->
+            <section data-comment="home-story">
+                <div class="home-story-inner">
+                    <div class="home-story-still" data-comment="home-story-still">
+                        <div class="still-illustration" data-comment="home-story-still-illustration">
+                            <svg width="220" height="320" viewBox="0 0 220 320" fill="none" xmlns="http://www.w3.org/2000/svg" data-comment="home-story-still-svg">
+                                <!-- Copper pot still illustration -->
+                                <ellipse cx="110" cy="200" rx="70" ry="80" fill="#3a2710" stroke="#6a4828" stroke-width="2"/>
+                                <ellipse cx="110" cy="120" rx="45" ry="50" fill="#3a2710" stroke="#6a4828" stroke-width="2"/>
+                                <rect x="95" y="70" width="30" height="55" rx="4" fill="#3a2710" stroke="#6a4828" stroke-width="2"/>
+                                <ellipse cx="110" cy="70" rx="20" ry="12" fill="#4a3820" stroke="#6a4828" stroke-width="2"/>
+                                <!-- Condensing coil -->
+                                <path d="M155 130 Q185 130 185 155 Q185 180 155 180 Q125 180 125 155" stroke="#8a6030" stroke-width="3" fill="none" stroke-linecap="round"/>
+                                <path d="M125 155 Q125 175 155 175 Q185 175 185 200 Q185 215 170 220" stroke="#8a6030" stroke-width="3" fill="none" stroke-linecap="round"/>
+                                <!-- Drip -->
+                                <line x1="170" y1="220" x2="170" y2="260" stroke="#8a6030" stroke-width="2"/>
+                                <!-- Mason jar -->
+                                <rect x="152" y="258" width="36" height="44" rx="3" fill="#2e1f0d" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="150" y="254" width="40" height="8" rx="2" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <!-- Shimmer/liquid in jar -->
+                                <rect x="155" y="270" width="30" height="28" rx="2" fill="rgba(200,134,10,0.15)"/>
+                                <ellipse cx="170" cy="270" rx="15" ry="3" fill="rgba(200,134,10,0.2)"/>
+                                <!-- Flame -->
+                                <ellipse cx="110" cy="285" rx="28" ry="8" fill="#1a1208"/>
+                                <path d="M95 280 Q100 265 110 270 Q115 258 120 265 Q128 255 125 270 Q132 265 128 278" fill="#c8860a" opacity="0.7"/>
+                                <path d="M100 280 Q105 270 110 273 Q114 265 118 272 Q122 268 120 278" fill="#e8a020" opacity="0.5"/>
+                                <!-- Decorative lines -->
+                                <line x1="40" y1="300" x2="80" y2="300" stroke="#4a3218" stroke-width="1"/>
+                                <line x1="140" y1="300" x2="180" y2="300" stroke="#4a3218" stroke-width="1"/>
+                                <text x="110" y="318" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#6a4828" font-style="italic">Est. 1962</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="home-story-text" data-comment="home-story-text">
+                        <p class="section-label" data-comment="home-story-label">The Man Behind the Still</p>
+                        <h2 class="section-heading" data-comment="home-story-heading">From the Mountains, With Love</h2>
+                        <blockquote class="home-story-quote" data-comment="home-story-quote">
+                            "You can't rush good whiskey, son. And you sure can't rush a man who makes it."
+                        </blockquote>
+                        <p class="home-story-body" data-comment="home-story-body">
+                            It started in 1962, tucked away in the Appalachian hills, when Grandpa Earl first lit the fire under his handmade copper pot still. What began as a family tradition became a lifelong craft — perfected batch by batch, season by season.
+                        </p>
+                        <p class="home-story-body" data-comment="home-story-body-2">
+                            We still use his recipes. We still use his still. We just put it in nicer jars now.
+                        </p>
+                        <button class="home-story-cta" data-comment="home-story-cta" onclick="navigate('story')">
+                            Read the full story &nbsp;→
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Products -->
+            <section data-comment="home-featured">
+                <div class="home-featured-header" data-comment="home-featured-header">
+                    <div>
+                        <p class="section-label" data-comment="home-featured-label">Signature Batches</p>
+                        <h2 class="home-featured-heading" data-comment="home-featured-heading">Our Best Sellers</h2>
+                    </div>
+                    <button class="home-featured-viewall" data-comment="home-featured-viewall" onclick="navigate('catalog')">View All Spirits →</button>
+                </div>
+                <div class="featured-grid" data-comment="home-featured-grid">
+                    <!-- Card 1 -->
+                    <div class="featured-card" data-comment="home-featured-card-1" onclick="navigate('catalog')">
+                        <div class="featured-card-image" data-comment="home-featured-card-1-image">
+                            <svg width="100" height="160" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg" data-comment="home-featured-card-1-svg">
+                                <rect x="30" y="20" width="40" height="100" rx="4" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="28" y="16" width="44" height="10" rx="3" fill="#4a3220" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="35" y="8" width="30" height="12" rx="2" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="33" y="40" width="34" height="60" rx="2" fill="rgba(200,134,10,0.12)"/>
+                                <text x="50" y="68" text-anchor="middle" font-family="Georgia" font-size="7" fill="#c8860a">ORIGINAL</text>
+                                <text x="50" y="80" text-anchor="middle" font-family="Georgia" font-size="5" fill="#8a6030">WHITE LIGHTNING</text>
+                                <rect x="30" y="118" width="40" height="12" rx="0" fill="#2e1f0d" stroke="#6a4828" stroke-width="1"/>
+                                <text x="50" y="128" text-anchor="middle" font-family="Georgia" font-size="5" fill="#6a4828">100 PROOF</text>
+                            </svg>
+                        </div>
+                        <div class="featured-card-body">
+                            <p class="featured-card-label" data-comment="home-featured-card-1-label">Original Recipe</p>
+                            <h3 class="featured-card-name" data-comment="home-featured-card-1-name">White Lightning</h3>
+                            <p class="featured-card-desc" data-comment="home-featured-card-1-desc">The original. Clear, clean, with a warm corn finish. Grandpa's recipe, unchanged since 1962.</p>
+                            <div class="featured-card-footer">
+                                <span class="featured-card-price" data-comment="home-featured-card-1-price">$38</span>
+                                <span class="featured-card-proof" data-comment="home-featured-card-1-proof">100 Proof</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="featured-card" data-comment="home-featured-card-2" onclick="navigate('catalog')">
+                        <div class="featured-card-image" data-comment="home-featured-card-2-image">
+                            <svg width="100" height="160" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg" data-comment="home-featured-card-2-svg">
+                                <rect x="30" y="20" width="40" height="100" rx="4" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="28" y="16" width="44" height="10" rx="3" fill="#4a3220" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="35" y="8" width="30" height="12" rx="2" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="33" y="40" width="34" height="60" rx="2" fill="rgba(139,32,32,0.25)"/>
+                                <text x="50" y="68" text-anchor="middle" font-family="Georgia" font-size="7" fill="#c8860a">APPLE PIE</text>
+                                <text x="50" y="80" text-anchor="middle" font-family="Georgia" font-size="5" fill="#8a6030">MOONSHINE</text>
+                                <rect x="30" y="118" width="40" height="12" rx="0" fill="#2e1f0d" stroke="#6a4828" stroke-width="1"/>
+                                <text x="50" y="128" text-anchor="middle" font-family="Georgia" font-size="5" fill="#6a4828">70 PROOF</text>
+                            </svg>
+                        </div>
+                        <div class="featured-card-body">
+                            <p class="featured-card-label" data-comment="home-featured-card-2-label">Flavored Spirit</p>
+                            <h3 class="featured-card-name" data-comment="home-featured-card-2-name">Apple Pie</h3>
+                            <p class="featured-card-desc" data-comment="home-featured-card-2-desc">Fresh apple cider and cinnamon. Tastes just like Grandma's pie — but with a kick that'd make her blush.</p>
+                            <div class="featured-card-footer">
+                                <span class="featured-card-price" data-comment="home-featured-card-2-price">$42</span>
+                                <span class="featured-card-proof" data-comment="home-featured-card-2-proof">70 Proof</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="featured-card" data-comment="home-featured-card-3" onclick="navigate('catalog')">
+                        <div class="featured-card-image" data-comment="home-featured-card-3-image">
+                            <svg width="100" height="160" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg" data-comment="home-featured-card-3-svg">
+                                <rect x="30" y="20" width="40" height="100" rx="4" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="28" y="16" width="44" height="10" rx="3" fill="#4a3220" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="35" y="8" width="30" height="12" rx="2" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="33" y="40" width="34" height="60" rx="2" fill="rgba(200,134,10,0.2)"/>
+                                <text x="50" y="68" text-anchor="middle" font-family="Georgia" font-size="7" fill="#c8860a">OAK AGED</text>
+                                <text x="50" y="80" text-anchor="middle" font-family="Georgia" font-size="5" fill="#8a6030">RESERVE</text>
+                                <rect x="30" y="118" width="40" height="12" rx="0" fill="#2e1f0d" stroke="#6a4828" stroke-width="1"/>
+                                <text x="50" y="128" text-anchor="middle" font-family="Georgia" font-size="5" fill="#6a4828">86 PROOF</text>
+                            </svg>
+                        </div>
+                        <div class="featured-card-body">
+                            <p class="featured-card-label" data-comment="home-featured-card-3-label">Aged Reserve</p>
+                            <h3 class="featured-card-name" data-comment="home-featured-card-3-name">Oak Reserve</h3>
+                            <p class="featured-card-desc" data-comment="home-featured-card-3-desc">Rested 6 months in charred white oak. Smooth vanilla, toasted caramel, and a long warm finish.</p>
+                            <div class="featured-card-footer">
+                                <span class="featured-card-price" data-comment="home-featured-card-3-price">$58</span>
+                                <span class="featured-card-proof" data-comment="home-featured-card-3-proof">86 Proof</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Process -->
+            <section data-comment="home-process">
+                <div class="home-process-inner">
+                    <div class="home-process-header" data-comment="home-process-header">
+                        <p class="section-label" data-comment="home-process-label">How It's Made</p>
+                        <h2 class="home-process-heading" data-comment="home-process-heading">Old Ways, Every Time</h2>
+                    </div>
+                    <div class="process-steps" data-comment="home-process-steps">
+                        <div class="process-step" data-comment="home-process-step-1">
+                            <div class="process-step-number" data-comment="home-process-step-1-number">01</div>
+                            <h3 class="process-step-title" data-comment="home-process-step-1-title">The Mash</h3>
+                            <p class="process-step-desc" data-comment="home-process-step-1-desc">Non-GMO yellow dent corn, malted barley, and mountain spring water. Cooked low and slow for a full 24 hours.</p>
+                        </div>
+                        <div class="process-step" data-comment="home-process-step-2">
+                            <div class="process-step-number" data-comment="home-process-step-2-number">02</div>
+                            <h3 class="process-step-title" data-comment="home-process-step-2-title">Fermentation</h3>
+                            <p class="process-step-desc" data-comment="home-process-step-2-desc">Open-air fermentation in 50-gallon cypress barrels. 7–10 days. No shortcuts, no accelerators.</p>
+                        </div>
+                        <div class="process-step" data-comment="home-process-step-3">
+                            <div class="process-step-number" data-comment="home-process-step-3-number">03</div>
+                            <h3 class="process-step-title" data-comment="home-process-step-3-title">The Still</h3>
+                            <p class="process-step-desc" data-comment="home-process-step-3-desc">Single-run through Grandpa's original copper pot still. We only take the heart cut. Everything else goes back in.</p>
+                        </div>
+                        <div class="process-step" data-comment="home-process-step-4">
+                            <div class="process-step-number" data-comment="home-process-step-4-number">04</div>
+                            <h3 class="process-step-title" data-comment="home-process-step-4-title">Hand Bottled</h3>
+                            <p class="process-step-desc" data-comment="home-process-step-4-desc">Every jar is filled, sealed, and labeled by hand. Batch number and date written with a Sharpie. Just like always.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom Banner -->
+            <section data-comment="home-banner">
+                <p class="home-banner-text" data-comment="home-banner-text">Taste the tradition.</p>
+                <p class="home-banner-sub" data-comment="home-banner-sub">Every jar tells sixty years of stories</p>
+                <button class="home-banner-cta" data-comment="home-banner-cta" onclick="navigate('catalog')">Order Now</button>
+            </section>
+
+            <!-- Footer -->
+            <footer data-comment="footer-root">
+                <div class="footer-inner">
+                    <div class="footer-top" data-comment="footer-top">
+                        <div class="footer-brand" data-comment="footer-brand">
+                            <span class="footer-brand-name" data-comment="footer-brand-name">Grandpa's Still</span>
+                            <span class="footer-brand-tagline" data-comment="footer-brand-tagline">Est. 1962 · Appalachian Moonshine</span>
+                            <p class="footer-brand-text" data-comment="footer-brand-text">Handcrafted in small batches from the same recipes Grandpa Earl perfected more than six decades ago. Nothing artificial. Nothing rushed.</p>
+                        </div>
+                        <div class="footer-col" data-comment="footer-col-nav">
+                            <p class="footer-col-heading" data-comment="footer-col-nav-heading">Navigate</p>
+                            <button class="footer-link" data-comment="footer-link-home" onclick="navigate('home')">Home</button>
+                            <button class="footer-link" data-comment="footer-link-catalog" onclick="navigate('catalog')">Our Spirits</button>
+                            <button class="footer-link" data-comment="footer-link-story" onclick="navigate('story')">Our Story</button>
+                            <button class="footer-link" data-comment="footer-link-contact" onclick="navigate('contact')">Contact</button>
+                        </div>
+                        <div class="footer-col" data-comment="footer-col-info">
+                            <p class="footer-col-heading" data-comment="footer-col-info-heading">Info</p>
+                            <button class="footer-link" data-comment="footer-link-shipping">Shipping & Returns</button>
+                            <button class="footer-link" data-comment="footer-link-wholesale">Wholesale</button>
+                            <button class="footer-link" data-comment="footer-link-age">Age Verification</button>
+                            <button class="footer-link" data-comment="footer-link-faq">FAQ</button>
+                        </div>
+                    </div>
+                    <div class="footer-bottom" data-comment="footer-bottom">
+                        <p class="footer-copyright" data-comment="footer-copyright">© 2026 Grandpa's Still. Must be 21+ to purchase. Please drink responsibly.</p>
+                        <div class="footer-social" data-comment="footer-social">
+                            <button class="footer-social-link" data-comment="footer-social-instagram">IG</button>
+                            <button class="footer-social-link" data-comment="footer-social-facebook">FB</button>
+                            <button class="footer-social-link" data-comment="footer-social-twitter">X</button>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+        </div><!-- /view-home -->
+
+
+        <!-- ══════════════════════════════════════════════════
+             CATALOG VIEW
+        ══════════════════════════════════════════════════ -->
+        <div id="view-catalog" class="view" data-comment="view-catalog">
+
+            <div class="catalog-hero" data-comment="catalog-hero">
+                <p class="catalog-hero-label" data-comment="catalog-hero-label">Grandpa's Still</p>
+                <h1 class="catalog-hero-heading" data-comment="catalog-hero-heading">Our Spirits</h1>
+                <p class="catalog-hero-sub" data-comment="catalog-hero-sub">Six signature batches, each one true to the tradition. Browse, pick your poison.</p>
+            </div>
+
+            <div class="catalog-filters" data-comment="catalog-filters">
+                <button class="filter-btn active" data-comment="catalog-filter-all" onclick="filterCatalog('all', this)">All</button>
+                <button class="filter-btn" data-comment="catalog-filter-original" onclick="filterCatalog('original', this)">Original</button>
+                <button class="filter-btn" data-comment="catalog-filter-flavored" onclick="filterCatalog('flavored', this)">Flavored</button>
+                <button class="filter-btn" data-comment="catalog-filter-aged" onclick="filterCatalog('aged', this)">Aged</button>
+            </div>
+
+            <div class="catalog-grid-section" data-comment="catalog-grid-section">
+                <div class="catalog-grid" data-comment="catalog-grid">
+
+                    <!-- Card 1: White Lightning -->
+                    <div class="catalog-card" data-comment="catalog-card-1" data-category="original">
+                        <div class="catalog-card-img" data-comment="catalog-card-1-img">
+                            <svg width="90" height="150" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg" data-comment="catalog-card-1-svg">
+                                <rect x="30" y="20" width="40" height="100" rx="4" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="28" y="16" width="44" height="10" rx="3" fill="#4a3220" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="35" y="8" width="30" height="12" rx="2" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="33" y="40" width="34" height="60" rx="2" fill="rgba(200,134,10,0.12)"/>
+                                <text x="50" y="65" text-anchor="middle" font-family="Georgia" font-size="7" fill="#c8860a">ORIGINAL</text>
+                                <text x="50" y="78" text-anchor="middle" font-family="Georgia" font-size="5" fill="#8a6030">WHITE LIGHTNING</text>
+                                <rect x="30" y="118" width="40" height="12" fill="#2e1f0d" stroke="#6a4828" stroke-width="1"/>
+                                <text x="50" y="128" text-anchor="middle" font-family="Georgia" font-size="5" fill="#6a4828">100 PROOF</text>
+                            </svg>
+                            <div class="catalog-card-badge" data-comment="catalog-card-1-badge">Best Seller</div>
+                        </div>
+                        <div class="catalog-card-info">
+                            <p class="catalog-card-category" data-comment="catalog-card-1-category">Original Recipe</p>
+                            <h3 class="catalog-card-name" data-comment="catalog-card-1-name">White Lightning</h3>
+                            <p class="catalog-card-proof" data-comment="catalog-card-1-proof">100 Proof · 750ml</p>
+                            <p class="catalog-card-desc" data-comment="catalog-card-1-desc">The original, unchanged since 1962. Clear as water, smooth as silk (after the third sip). Non-GMO corn mash, copper pot distilled, zero additives.</p>
+                            <div class="catalog-card-bottom">
+                                <span class="catalog-card-price" data-comment="catalog-card-1-price">$38</span>
+                                <button class="catalog-card-btn" data-comment="catalog-card-1-btn" onclick="addToCart('White Lightning')">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Apple Pie -->
+                    <div class="catalog-card" data-comment="catalog-card-2" data-category="flavored">
+                        <div class="catalog-card-img" data-comment="catalog-card-2-img">
+                            <svg width="90" height="150" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg" data-comment="catalog-card-2-svg">
+                                <rect x="30" y="20" width="40" height="100" rx="4" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="28" y="16" width="44" height="10" rx="3" fill="#4a3220" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="35" y="8" width="30" height="12" rx="2" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="33" y="40" width="34" height="60" rx="2" fill="rgba(139,32,32,0.25)"/>
+                                <text x="50" y="65" text-anchor="middle" font-family="Georgia" font-size="7" fill="#c8860a">APPLE PIE</text>
+                                <text x="50" y="78" text-anchor="middle" font-family="Georgia" font-size="5" fill="#8a6030">MOONSHINE</text>
+                                <rect x="30" y="118" width="40" height="12" fill="#2e1f0d" stroke="#6a4828" stroke-width="1"/>
+                                <text x="50" y="128" text-anchor="middle" font-family="Georgia" font-size="5" fill="#6a4828">70 PROOF</text>
+                            </svg>
+                        </div>
+                        <div class="catalog-card-info">
+                            <p class="catalog-card-category" data-comment="catalog-card-2-category">Flavored Spirit</p>
+                            <h3 class="catalog-card-name" data-comment="catalog-card-2-name">Apple Pie</h3>
+                            <p class="catalog-card-proof" data-comment="catalog-card-2-proof">70 Proof · 750ml</p>
+                            <p class="catalog-card-desc" data-comment="catalog-card-2-desc">Fresh apple cider, cinnamon stick, and a generous pour of white lightning. Tastes exactly like Grandma's pie — but with consequences.</p>
+                            <div class="catalog-card-bottom">
+                                <span class="catalog-card-price" data-comment="catalog-card-2-price">$42</span>
+                                <button class="catalog-card-btn" data-comment="catalog-card-2-btn" onclick="addToCart('Apple Pie')">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Peach -->
+                    <div class="catalog-card" data-comment="catalog-card-3" data-category="flavored">
+                        <div class="catalog-card-img" data-comment="catalog-card-3-img">
+                            <svg width="90" height="150" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg" data-comment="catalog-card-3-svg">
+                                <rect x="30" y="20" width="40" height="100" rx="4" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="28" y="16" width="44" height="10" rx="3" fill="#4a3220" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="35" y="8" width="30" height="12" rx="2" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="33" y="40" width="34" height="60" rx="2" fill="rgba(200,120,50,0.2)"/>
+                                <text x="50" y="65" text-anchor="middle" font-family="Georgia" font-size="7" fill="#c8860a">PEACH</text>
+                                <text x="50" y="78" text-anchor="middle" font-family="Georgia" font-size="5" fill="#8a6030">MOONSHINE</text>
+                                <rect x="30" y="118" width="40" height="12" fill="#2e1f0d" stroke="#6a4828" stroke-width="1"/>
+                                <text x="50" y="128" text-anchor="middle" font-family="Georgia" font-size="5" fill="#6a4828">75 PROOF</text>
+                            </svg>
+                        </div>
+                        <div class="catalog-card-info">
+                            <p class="catalog-card-category" data-comment="catalog-card-3-category">Flavored Spirit</p>
+                            <h3 class="catalog-card-name" data-comment="catalog-card-3-name">Georgia Peach</h3>
+                            <p class="catalog-card-proof" data-comment="catalog-card-3-proof">75 Proof · 750ml</p>
+                            <p class="catalog-card-desc" data-comment="catalog-card-3-desc">Sun-ripened Georgia peaches macerated for 30 days. Sweet up front, warm heat at the finish. Summer in a jar.</p>
+                            <div class="catalog-card-bottom">
+                                <span class="catalog-card-price" data-comment="catalog-card-3-price">$44</span>
+                                <button class="catalog-card-btn" data-comment="catalog-card-3-btn" onclick="addToCart('Georgia Peach')">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Oak Reserve -->
+                    <div class="catalog-card" data-comment="catalog-card-4" data-category="aged">
+                        <div class="catalog-card-img" data-comment="catalog-card-4-img">
+                            <svg width="90" height="150" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg" data-comment="catalog-card-4-svg">
+                                <rect x="30" y="20" width="40" height="100" rx="4" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="28" y="16" width="44" height="10" rx="3" fill="#4a3220" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="35" y="8" width="30" height="12" rx="2" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="33" y="40" width="34" height="60" rx="2" fill="rgba(200,134,10,0.2)"/>
+                                <text x="50" y="65" text-anchor="middle" font-family="Georgia" font-size="7" fill="#c8860a">OAK AGED</text>
+                                <text x="50" y="78" text-anchor="middle" font-family="Georgia" font-size="5" fill="#8a6030">RESERVE</text>
+                                <rect x="30" y="118" width="40" height="12" fill="#2e1f0d" stroke="#6a4828" stroke-width="1"/>
+                                <text x="50" y="128" text-anchor="middle" font-family="Georgia" font-size="5" fill="#6a4828">86 PROOF</text>
+                            </svg>
+                            <div class="catalog-card-badge" data-comment="catalog-card-4-badge">Limited</div>
+                        </div>
+                        <div class="catalog-card-info">
+                            <p class="catalog-card-category" data-comment="catalog-card-4-category">Aged Reserve</p>
+                            <h3 class="catalog-card-name" data-comment="catalog-card-4-name">Oak Reserve</h3>
+                            <p class="catalog-card-proof" data-comment="catalog-card-4-proof">86 Proof · 750ml</p>
+                            <p class="catalog-card-desc" data-comment="catalog-card-4-desc">Rested 6 months in charred white oak barrels. Vanilla, caramel, a touch of smoke. The closest thing we make to a whiskey.</p>
+                            <div class="catalog-card-bottom">
+                                <span class="catalog-card-price" data-comment="catalog-card-4-price">$58</span>
+                                <button class="catalog-card-btn" data-comment="catalog-card-4-btn" onclick="addToCart('Oak Reserve')">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Black Cherry -->
+                    <div class="catalog-card" data-comment="catalog-card-5" data-category="flavored">
+                        <div class="catalog-card-img" data-comment="catalog-card-5-img">
+                            <svg width="90" height="150" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg" data-comment="catalog-card-5-svg">
+                                <rect x="30" y="20" width="40" height="100" rx="4" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="28" y="16" width="44" height="10" rx="3" fill="#4a3220" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="35" y="8" width="30" height="12" rx="2" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="33" y="40" width="34" height="60" rx="2" fill="rgba(80,0,20,0.4)"/>
+                                <text x="50" y="62" text-anchor="middle" font-family="Georgia" font-size="6" fill="#c8860a">BLACK</text>
+                                <text x="50" y="73" text-anchor="middle" font-family="Georgia" font-size="6" fill="#c8860a">CHERRY</text>
+                                <text x="50" y="84" text-anchor="middle" font-family="Georgia" font-size="5" fill="#8a6030">MOONSHINE</text>
+                                <rect x="30" y="118" width="40" height="12" fill="#2e1f0d" stroke="#6a4828" stroke-width="1"/>
+                                <text x="50" y="128" text-anchor="middle" font-family="Georgia" font-size="5" fill="#6a4828">80 PROOF</text>
+                            </svg>
+                        </div>
+                        <div class="catalog-card-info">
+                            <p class="catalog-card-category" data-comment="catalog-card-5-category">Flavored Spirit</p>
+                            <h3 class="catalog-card-name" data-comment="catalog-card-5-name">Black Cherry</h3>
+                            <p class="catalog-card-proof" data-comment="catalog-card-5-proof">80 Proof · 750ml</p>
+                            <p class="catalog-card-desc" data-comment="catalog-card-5-desc">Wild black cherries, a hint of almond, bold and deep. Straight or over ice — either way, it disappears fast.</p>
+                            <div class="catalog-card-bottom">
+                                <span class="catalog-card-price" data-comment="catalog-card-5-price">$44</span>
+                                <button class="catalog-card-btn" data-comment="catalog-card-5-btn" onclick="addToCart('Black Cherry')">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: Double Aged -->
+                    <div class="catalog-card" data-comment="catalog-card-6" data-category="aged">
+                        <div class="catalog-card-img" data-comment="catalog-card-6-img">
+                            <svg width="90" height="150" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg" data-comment="catalog-card-6-svg">
+                                <rect x="30" y="20" width="40" height="100" rx="4" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="28" y="16" width="44" height="10" rx="3" fill="#4a3220" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="35" y="8" width="30" height="12" rx="2" fill="#3a2710" stroke="#6a4828" stroke-width="1.5"/>
+                                <rect x="33" y="40" width="34" height="60" rx="2" fill="rgba(160,100,0,0.3)"/>
+                                <text x="50" y="62" text-anchor="middle" font-family="Georgia" font-size="6" fill="#c8860a">DOUBLE</text>
+                                <text x="50" y="73" text-anchor="middle" font-family="Georgia" font-size="6" fill="#c8860a">BARREL</text>
+                                <text x="50" y="84" text-anchor="middle" font-family="Georgia" font-size="5" fill="#8a6030">RESERVE</text>
+                                <rect x="30" y="118" width="40" height="12" fill="#2e1f0d" stroke="#6a4828" stroke-width="1"/>
+                                <text x="50" y="128" text-anchor="middle" font-family="Georgia" font-size="5" fill="#6a4828">90 PROOF</text>
+                            </svg>
+                            <div class="catalog-card-badge" data-comment="catalog-card-6-badge">New</div>
+                        </div>
+                        <div class="catalog-card-info">
+                            <p class="catalog-card-category" data-comment="catalog-card-6-category">Aged Reserve</p>
+                            <h3 class="catalog-card-name" data-comment="catalog-card-6-name">Double Barrel</h3>
+                            <p class="catalog-card-proof" data-comment="catalog-card-6-proof">90 Proof · 750ml</p>
+                            <p class="catalog-card-desc" data-comment="catalog-card-6-desc">First oak, then cherry wood. 12 months total. Complex and confident — the most patient thing Grandpa ever made.</p>
+                            <div class="catalog-card-bottom">
+                                <span class="catalog-card-price" data-comment="catalog-card-6-price">$72</span>
+                                <button class="catalog-card-btn" data-comment="catalog-card-6-btn" onclick="addToCart('Double Barrel')">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div><!-- /view-catalog -->
+
+
+        <!-- ══════════════════════════════════════════════════
+             STORY VIEW
+        ══════════════════════════════════════════════════ -->
+        <div id="view-story" class="view" data-comment="view-story">
+
+            <div class="story-hero" data-comment="story-hero">
+                <p class="story-hero-label" data-comment="story-hero-label">Est. 1962 · Appalachian Mountains</p>
+                <h1 class="story-hero-heading" data-comment="story-hero-heading">Our Story</h1>
+                <p class="story-hero-sub" data-comment="story-hero-sub">Three generations. One copper pot. Zero compromises.</p>
+            </div>
+
+            <div class="story-body" data-comment="story-body">
+
+                <div class="story-chapter" data-comment="story-chapter-1">
+                    <h2 class="story-chapter-heading" data-comment="story-chapter-1-heading">Where It All Started</h2>
+                    <p class="story-chapter-text" data-comment="story-chapter-1-text">In the summer of 1962, a 24-year-old man named Earl Tibbs built a copper pot still in the shed behind his house in the Blue Ridge Mountains of North Carolina. He'd learned to distill from his own grandfather, who'd learned from his. The recipe was passed down not as a document, but as a conversation — measured in handfuls, counted by smell, guided by feel.</p>
+                </div>
+
+                <div class="story-portrait" data-comment="story-portrait">
+                    <svg width="200" height="280" viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg" data-comment="story-portrait-svg">
+                        <!-- Simple portrait placeholder -->
+                        <rect width="200" height="280" fill="#2e1f0d"/>
+                        <!-- Figure silhouette -->
+                        <ellipse cx="100" cy="80" rx="35" ry="40" fill="#3a2710"/>
+                        <rect x="60" y="115" width="80" height="100" rx="8" fill="#3a2710"/>
+                        <!-- Hat brim -->
+                        <ellipse cx="100" cy="44" rx="45" ry="8" fill="#4a3220"/>
+                        <rect x="75" y="22" width="50" height="28" rx="4" fill="#4a3220"/>
+                        <!-- Overalls strap details -->
+                        <rect x="85" y="115" width="10" height="60" fill="#3a2a10"/>
+                        <rect x="105" y="115" width="10" height="60" fill="#3a2a10"/>
+                        <!-- Frame -->
+                        <rect x="4" y="4" width="192" height="272" fill="none" stroke="#4a3218" stroke-width="2"/>
+                        <rect x="10" y="10" width="180" height="260" fill="none" stroke="#3a2710" stroke-width="1"/>
+                        <!-- Caption area -->
+                        <text x="100" y="248" text-anchor="middle" font-family="Georgia" font-style="italic" font-size="12" fill="#6a4828">Earl Tibbs, circa 1968</text>
+                        <text x="100" y="266" text-anchor="middle" font-family="Georgia" font-size="10" fill="#4a3218">Blue Ridge Mountains, NC</text>
+                    </svg>
+                </div>
+                <p class="story-portrait-caption" data-comment="story-portrait-caption">Grandpa Earl at his still, 1968. That's the same copper pot we use today.</p>
+
+                <div class="story-chapter" data-comment="story-chapter-2">
+                    <h2 class="story-chapter-heading" data-comment="story-chapter-2-heading">The Craft</h2>
+                    <p class="story-chapter-text" data-comment="story-chapter-2-text">Earl never cut corners. His philosophy was simple: use the best grain you can find, use clean mountain water, ferment slow, and only take the heart cut from the still. The heads and tails — the parts that would make your head pound the next morning — went straight back into the next batch. "If it ain't the good part," he'd say, "it ain't going in the jar."</p>
+                </div>
+
+                <div class="story-chapter" data-comment="story-chapter-3">
+                    <h2 class="story-chapter-heading" data-comment="story-chapter-3-heading">Three Generations On</h2>
+                    <p class="story-chapter-text" data-comment="story-chapter-3-text">Today, Earl's grandchildren run the operation. The still has been restored, the shed has been expanded into a proper distillery, and we have a license now — something Grandpa would've found very amusing. But the corn mash recipe hasn't changed, the fermentation time hasn't changed, and the copper pot is the same one Earl built in that shed in 1962. Some things, you just don't fix.</p>
+                </div>
+
+            </div>
+
+            <div class="story-values" data-comment="story-values">
+                <div class="story-value" data-comment="story-value-1">
+                    <span class="story-value-icon" data-comment="story-value-1-icon">🌽</span>
+                    <h3 class="story-value-title" data-comment="story-value-1-title">Real Ingredients</h3>
+                    <p class="story-value-text" data-comment="story-value-1-text">Non-GMO grain, mountain spring water. No artificial flavors, no additives, no shortcuts. Ever.</p>
+                </div>
+                <div class="story-value" data-comment="story-value-2">
+                    <span class="story-value-icon" data-comment="story-value-2-icon">🪣</span>
+                    <h3 class="story-value-title" data-comment="story-value-2-title">Small Batches</h3>
+                    <p class="story-value-text" data-comment="story-value-2-text">We make 50 gallons at a time. Not 5,000. Every batch gets personal attention from someone who cares about it.</p>
+                </div>
+                <div class="story-value" data-comment="story-value-3">
+                    <span class="story-value-icon" data-comment="story-value-3-icon">🏔️</span>
+                    <h3 class="story-value-title" data-comment="story-value-3-title">Mountain Roots</h3>
+                    <p class="story-value-text" data-comment="story-value-3-text">Still made in the Blue Ridge. Still using the same spring water. The mountains make it taste the way it does.</p>
+                </div>
+            </div>
+
+        </div><!-- /view-story -->
+
+
+        <!-- ══════════════════════════════════════════════════
+             CONTACT VIEW
+        ══════════════════════════════════════════════════ -->
+        <div id="view-contact" class="view" data-comment="view-contact">
+
+            <div class="contact-hero" data-comment="contact-hero">
+                <p class="contact-hero-label" data-comment="contact-hero-label">Get in Touch</p>
+                <h1 class="contact-hero-heading" data-comment="contact-hero-heading">Contact Us</h1>
+                <p class="contact-hero-sub" data-comment="contact-hero-sub">Orders, wholesale inquiries, or just want to talk shine — we're here.</p>
+            </div>
+
+            <div class="contact-body" data-comment="contact-body">
+                <div class="contact-info" data-comment="contact-info">
+                    <div>
+                        <h2 class="contact-info-heading" data-comment="contact-info-heading">Come Find Us</h2>
+                        <p class="contact-info-text" data-comment="contact-info-text">We're tucked up in the mountains, but we ship nationwide. Stop by the distillery on weekends — tasting room is open Saturday and Sunday, 10am–5pm.</p>
+                    </div>
+                    <div class="contact-detail" data-comment="contact-detail-address">
+                        <span class="contact-detail-label" data-comment="contact-detail-address-label">Address</span>
+                        <span class="contact-detail-value" data-comment="contact-detail-address-value">412 Still Creek Road<br>Boone, NC 28607</span>
+                    </div>
+                    <div class="contact-detail" data-comment="contact-detail-hours">
+                        <span class="contact-detail-label" data-comment="contact-detail-hours-label">Tasting Room Hours</span>
+                        <span class="contact-detail-value" data-comment="contact-detail-hours-value">Sat – Sun · 10am to 5pm</span>
+                    </div>
+                    <div class="contact-detail" data-comment="contact-detail-phone">
+                        <span class="contact-detail-label" data-comment="contact-detail-phone-label">Phone</span>
+                        <span class="contact-detail-value" data-comment="contact-detail-phone-value">(828) 555-0194</span>
+                    </div>
+                    <div class="contact-detail" data-comment="contact-detail-email">
+                        <span class="contact-detail-label" data-comment="contact-detail-email-label">Email</span>
+                        <span class="contact-detail-value" data-comment="contact-detail-email-value">hello@grandpasstill.com</span>
+                    </div>
+                </div>
+
+                <div class="contact-form" data-comment="contact-form">
+                    <h2 class="contact-form-heading" data-comment="contact-form-heading">Send a Message</h2>
+                    <div class="form-field" data-comment="contact-field-name">
+                        <label class="form-label" data-comment="contact-field-name-label">Your Name</label>
+                        <input class="form-input" data-comment="contact-field-name-input" type="text" placeholder="Earl Tibbs Jr." />
+                    </div>
+                    <div class="form-field" data-comment="contact-field-email">
+                        <label class="form-label" data-comment="contact-field-email-label">Email Address</label>
+                        <input class="form-input" data-comment="contact-field-email-input" type="email" placeholder="you@example.com" />
+                    </div>
+                    <div class="form-field" data-comment="contact-field-subject">
+                        <label class="form-label" data-comment="contact-field-subject-label">Subject</label>
+                        <input class="form-input" data-comment="contact-field-subject-input" type="text" placeholder="Order, wholesale, or just hello" />
+                    </div>
+                    <div class="form-field" data-comment="contact-field-message">
+                        <label class="form-label" data-comment="contact-field-message-label">Message</label>
+                        <textarea class="form-input form-textarea" data-comment="contact-field-message-input" placeholder="Tell us what you need..."></textarea>
+                    </div>
+                    <button class="contact-form-submit" data-comment="contact-form-submit" onclick="submitForm()">Send Message</button>
+                    <p class="contact-form-note" data-comment="contact-form-note">We usually reply within one business day. Or whenever Grandpa gets off the porch.</p>
+                </div>
+            </div>
+
+        </div><!-- /view-contact -->
+
+        <!-- Toast notification -->
+        <div class="notify" data-comment="notify-toast" id="toast"></div>
+
+        <script>
+            function navigate(page) {
+                document.querySelectorAll('.view').forEach(v => {
+                    v.classList.remove('active');
+                    setTimeout(() => {
+                        if (!v.classList.contains('active')) v.style.display = 'none';
+                    }, 400);
+                });
+                const target = document.getElementById('view-' + page);
+                target.style.display = 'block';
+                requestAnimationFrame(() =>
+                    requestAnimationFrame(() => target.classList.add('active'))
+                );
+                document.querySelectorAll('[data-comment^="nav-link-"]').forEach(link => {
+                    link.classList.toggle('active', link.dataset.comment === 'nav-link-' + page);
+                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            function filterCatalog(category, btn) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.catalog-card').forEach(card => {
+                    if (category === 'all' || card.dataset.category === category) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
+            function addToCart(name) {
+                showToast('Added "' + name + '" to your cart');
+            }
+
+            function submitForm() {
+                showToast('Message sent! We\'ll be in touch soon.');
+            }
+
+            function showToast(msg) {
+                const toast = document.getElementById('toast');
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            }
+
+            // Init first view display
+            document.getElementById('view-home').style.display = 'block';
+        </script>
+    </body>
+</html>
